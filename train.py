@@ -19,19 +19,22 @@ from torch.utils.data import Dataset, DataLoader
 from transformers import AutoTokenizer, AutoModelForCausalLM, get_cosine_schedule_with_warmup
 from accelerate import Accelerator
 from huggingface_hub import login
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # ─────────────────────────────────────────────────────────────
 # Config — change these as needed
 # ─────────────────────────────────────────────────────────────
 
-login(token=os.environ["HF_TOKEN"])
+login(token=os.getenv("HF_TOKEN"))
 
 MODEL_NAME    = "Qwen/Qwen3.5-0.8B"
 OUTPUT_DIR    = "outputs/hin-guj"
 MAX_SEQ_LEN   = 256
 BATCH_SIZE    = 2          # per GPU
 GRAD_ACCUM    = 4          # effective batch = 8 * 4 * num_gpus
-NUM_EPOCHS    = 3         # small dataset (1503 samples) needs more epochs
+NUM_EPOCHS    = 20         # small dataset (1503 samples) needs more epochs
 LR            = 2e-5
 WARMUP_RATIO  = 0.1
 LOGGING_STEPS = 10
