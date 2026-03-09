@@ -23,6 +23,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+print("CUDA available:", torch.cuda.is_available())
+print("GPU name:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "No GPU")
 # ─────────────────────────────────────────────────────────────
 # Config — change these as needed
 # ─────────────────────────────────────────────────────────────
@@ -202,6 +204,7 @@ def train():
 
         # Gather val loss across all GPUs and average
         val_loss_tensor = torch.tensor(val_loss, device=accelerator.device)
+        print("Device:", accelerator.device)
         val_loss_tensor = accelerator.reduce(val_loss_tensor, reduction="mean")
         val_loss = val_loss_tensor.item()
 
